@@ -85,7 +85,7 @@ kadvapatelsamaj/
 ---
 
 ### 📞 Contact Details
-- **Phone:** +91 70434 24333 / 02892-234333
+- **Phone:** +91 86049 00990 / 02892-234333
 - **Email:** umadwarka16@gmail.com
 - **Address:** Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat – 361335
 - **GPS:** 22.2461705°N, 68.9574118°E

@@ -340,14 +340,14 @@ function Navbar({ onBook }) {
         ),
         // CTA
         React.createElement('div', { className: 'nav-cta' },
-          React.createElement('a', { className: 'nav-phone', href: 'tel:+917043424333' },
+          React.createElement('a', { className: 'nav-phone', href: 'tel:+918604900990' },
             React.createElement(Icon, { name: 'phone', size: 14 }),
-            ' +91 70434 24333'
+            ' +91 86049 00990'
           ),
           React.createElement('a', {
             className: 'btn btn-gold',
             style: { padding: '10px 20px', fontSize: '12px', textDecoration: 'none' },
-            href: 'tel:+917043424333',
+            href: 'tel:+918604900990',
             onClick: onBook
           }, 'Book Now')
         ),
@@ -374,15 +374,15 @@ function Navbar({ onBook }) {
       ),
       React.createElement('a', {
         className: 'btn btn-gold',
-        href: 'tel:+917043424333',
+        href: 'tel:+918604900990',
         style: { textDecoration: 'none' },
         onClick: () => { setMenuOpen(false); onBook(); }
       },
         React.createElement(Icon, { name: 'phone', size: 16 }),
         ' Book Now'
       ),
-      React.createElement('a', { href: 'tel:+917043424333', style: { color: 'var(--clr-gold)', fontWeight: 600, fontSize: 15 } },
-        '📞 +91 70434 24333'
+      React.createElement('a', { href: 'tel:+918604900990', style: { color: 'var(--clr-gold)', fontWeight: 600, fontSize: 15 } },
+        '📞 +91 86049 00990'
       )
     )
   );
@@ -412,7 +412,7 @@ function Hero({ onBook }) {
       React.createElement('div', { className: 'hero-actions' },
         React.createElement('a', {
           className: 'btn btn-gold',
-          href: 'tel:+917043424333',
+          href: 'tel:+918604900990',
           style: { textDecoration: 'none' },
           onClick: onBook
         },
@@ -652,7 +652,7 @@ function RoomCard({ room, onBook, delay }) {
         ),
         React.createElement('a', {
           className: 'room-book-btn',
-          href: 'tel:+917043424333',
+          href: 'tel:+918604900990',
           style: { textDecoration: 'none' },
           onClick: () => onBook(room)
         }, 'Book Now')
@@ -817,7 +817,7 @@ function Location() {
           React.createElement('div', { className: 'location-cards' },
             [
               { icon: 'map-pin',   label: 'Address',   value: 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat – 361335', hint: 'GPS: 22.2461705°N, 68.9574118°E' },
-              { icon: 'phone',     label: 'Call Us',   value: '+91 70434 24333  |  02892-234333',   hint: 'Reception open 24 hours' },
+              { icon: 'phone',     label: 'Call Us',   value: '+91 86049 00990  |  02892-234333',   hint: 'Reception open 24 hours' },
               { icon: 'mail',      label: 'Email',     value: 'umadwarka16@gmail.com',               hint: 'Response within 24 hours' },
               { icon: 'clock',     label: 'Check-in',  value: 'Check-in: 11:00 AM  |  Check-out: 10:00 AM', hint: 'Early check-in subject to availability' },
             ].map((c, i) =>
@@ -863,14 +863,14 @@ function BookingCTA({ onBook }) {
         React.createElement('div', { className: 'booking-cta-actions' },
           React.createElement('a', {
             className: 'btn btn-white',
-            href: 'tel:+917043424333',
+            href: 'tel:+918604900990',
             style: { textDecoration: 'none' },
             onClick: onBook
           },
             React.createElement(Icon, { name: 'phone', size: 16 }),
             ' Book a Room'
           ),
-          React.createElement('a', { className: 'btn btn-outline', href: 'tel:+917043424333', style: { borderColor: 'white', color: 'white', textDecoration: 'none' } },
+          React.createElement('a', { className: 'btn btn-outline', href: 'tel:+918604900990', style: { borderColor: 'white', color: 'white', textDecoration: 'none' } },
             React.createElement(Icon, { name: 'phone', size: 16 }),
             ' Call Reception'
           )
@@ -904,7 +904,7 @@ function Contact() {
           React.createElement('h3', { style: { fontFamily: 'var(--ff-display)', fontSize: '22px', fontWeight: 600, marginBottom: '20px', color: 'var(--clr-deep)' } }, 'Contact Information'),
           React.createElement('div', { className: 'contact-cards' },
             [
-              { icon: 'phone',   label: 'Phone',    value: '+91 70434 24333', hint: '24-hour reception' },
+              { icon: 'phone',   label: 'Phone',    value: '+91 86049 00990', hint: '24-hour reception' },
               { icon: 'phone',   label: 'Landline', value: '02892 - 234333', hint: 'Office hours: 7AM – 10PM' },
               { icon: 'mail',    label: 'Email',    value: 'umadwarka16@gmail.com', hint: 'Enquiries & bookings' },
               { icon: 'map-pin', label: 'Address',  value: 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat 361335', hint: 'GPS: 22.2461°N 68.9574°E' },
@@ -1031,7 +1031,7 @@ function Footer() {
         React.createElement('div', null,
           React.createElement('div', { className: 'footer-heading' }, 'Contact'),
           React.createElement('div', { className: 'footer-links' },
-            React.createElement('a', { href: 'tel:+917043424333' }, '+91 70434 24333'),
+            React.createElement('a', { href: 'tel:+918604900990' }, '+91 86049 00990'),
             React.createElement('a', { href: 'tel:02892234333' }, '02892 - 234333'),
             React.createElement('a', { href: 'mailto:umadwarka16@gmail.com' }, 'umadwarka16@gmail.com'),
             React.createElement('span', { style: { color: 'rgba(255,255,255,0.4)', fontSize: 13, lineHeight: 1.6 } }, 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat 361335')
@@ -1138,7 +1138,7 @@ function BookingModal({ room, onClose }) {
           React.createElement('button', { type: 'submit', className: 'form-submit' }, 'Confirm Enquiry'),
           React.createElement('div', { style: { textAlign: 'center', marginTop: '12px' } },
             React.createElement('a', {
-              href: `https://wa.me/917043424333?text=${whatsappMsg}`,
+              href: `https://wa.me/918604900990?text=${whatsappMsg}`,
               target: '_blank',
               rel: 'noopener noreferrer',
               style: { display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#25D366', fontWeight: 600 }
@@ -1166,7 +1166,7 @@ function BookingModal({ room, onClose }) {
           )
         ),
         React.createElement('a', {
-          href: `https://wa.me/917043424333?text=${whatsappMsg}`,
+          href: `https://wa.me/918604900990?text=${whatsappMsg}`,
           target: '_blank', rel: 'noopener noreferrer',
           className: 'btn btn-gold', style: { width: '100%', justifyContent: 'center' }
         }, '💬 Also message us on WhatsApp'),
@@ -1207,19 +1207,19 @@ function BackToTop() {
 // ─── WHATSAPP FLOAT ───────────────────────────────────────────
 function WhatsAppFloat() {
   return React.createElement('a', {
-    href: 'https://wa.me/917043424333?text=Hello%2C%20I%20would%20like%20to%20book%20a%20room%20at%20Uma%20Atithi%20Gruh%20Dwarka.',
+    href: 'https://wa.me/918604900990?text=Hello%2C%20I%20would%20like%20to%20book%20a%20room%20at%20Uma%20Atithi%20Gruh%20Dwarka.',
     target: '_blank',
     rel: 'noopener noreferrer',
     className: 'whatsapp-float-btn',
-    'aria-label': 'Chat with Uma Atithi Gruh on WhatsApp: +91 70434 24333',
-    title: 'Chat on WhatsApp: +91 70434 24333'
+    'aria-label': 'Chat with Uma Atithi Gruh on WhatsApp: +91 86049 00990',
+    title: 'Chat on WhatsApp: +91 86049 00990'
   },
     React.createElement('span', { className: 'whatsapp-float-icon-wrap' },
       React.createElement(Icon, { name: 'whatsapp', size: 20 })
     ),
     React.createElement('span', { className: 'whatsapp-float-text' },
       React.createElement('span', { className: 'whatsapp-float-label' }, 'Chat on WhatsApp'),
-      React.createElement('span', { className: 'whatsapp-float-num' }, '+91 70434 24333')
+      React.createElement('span', { className: 'whatsapp-float-num' }, '+91 86049 00990')
     )
   );
 }
@@ -1229,7 +1229,7 @@ function App() {
   useScrollReveal();
 
   const handleBookCall = useCallback(() => {
-    window.location.href = 'tel:+917043424333';
+    window.location.href = 'tel:+918604900990';
   }, []);
 
   return React.createElement(React.Fragment, null,
