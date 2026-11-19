@@ -279,6 +279,21 @@ function Stars({ rating, size = 14 }) {
   );
 }
 
+// ─── ROUTING PATH HELPERS ────────────────────────────────────
+function getBasePath() {
+  const p = window.location.pathname;
+  if (p.includes('/kadvapatelsamaj/')) {
+    return '/kadvapatelsamaj/';
+  }
+  return '/';
+}
+
+function getPageUrl(pageId) {
+  const base = getBasePath();
+  if (pageId === 'home') return base;
+  return `${base}${pageId}`;
+}
+
 // ─── PAGE HEADER BANNER (FOR DEDICATED CATEGORY PAGES) ───────
 function PageHeader({ eyebrow, title, subtitle, breadcrumb, onHome }) {
   return React.createElement('div', { className: 'page-hero' },
@@ -292,7 +307,7 @@ function PageHeader({ eyebrow, title, subtitle, breadcrumb, onHome }) {
       subtitle && React.createElement('p', { className: 'page-hero-subtitle' }, subtitle),
       React.createElement('div', { className: 'page-breadcrumb' },
         React.createElement('a', {
-          href: '#home',
+          href: getPageUrl('home'),
           onClick: (e) => { e.preventDefault(); onHome(); }
         }, 'Home'),
         React.createElement('span', { className: 'page-breadcrumb-separator' }, '/'),
@@ -327,7 +342,7 @@ function Navbar({ currentPage, onNavigate, onBook }) {
       React.createElement('div', { className: 'navbar-inner' },
         // Logo
         React.createElement('a', {
-          href: '#home',
+          href: getPageUrl('home'),
           className: 'navbar-logo',
           onClick: (e) => { e.preventDefault(); onNavigate('home'); }
         },
@@ -347,7 +362,7 @@ function Navbar({ currentPage, onNavigate, onBook }) {
           links.map(l =>
             React.createElement('a', {
               key: l.id,
-              href: `#/${l.id}`,
+              href: getPageUrl(l.id),
               className: `nav-link${currentPage === l.id ? ' active' : ''}`,
               onClick: (e) => { e.preventDefault(); onNavigate(l.id); }
             }, l.label)
@@ -382,7 +397,7 @@ function Navbar({ currentPage, onNavigate, onBook }) {
       links.map(l =>
         React.createElement('a', {
           key: l.id,
-          href: `#/${l.id}`,
+          href: getPageUrl(l.id),
           className: `nav-link${currentPage === l.id ? ' active' : ''}`,
           onClick: (e) => { e.preventDefault(); setMenuOpen(false); onNavigate(l.id); }
         }, l.label)
@@ -436,7 +451,7 @@ function Hero({ onBook, onNavigate }) {
         ),
         React.createElement('a', {
           className: 'btn btn-white',
-          href: '#/rooms',
+          href: getPageUrl('rooms'),
           style: { textDecoration: 'none' },
           onClick: (e) => { e.preventDefault(); onNavigate('rooms'); }
         },
@@ -555,7 +570,7 @@ function About({ onNavigate, showButton = false }) {
           ),
           showButton && React.createElement('div', { style: { marginTop: '28px' } },
             React.createElement('a', {
-              href: '#/about',
+              href: getPageUrl('about'),
               className: 'btn btn-gold',
               onClick: (e) => { e.preventDefault(); onNavigate('about'); }
             }, 'Read More About Us →')
@@ -789,7 +804,7 @@ function Dining({ onNavigate, showButton = false }) {
           ),
           showButton && React.createElement('div', { style: { marginTop: '28px' } },
             React.createElement('a', {
-              href: '#/dining',
+              href: getPageUrl('dining'),
               className: 'btn btn-gold',
               onClick: (e) => { e.preventDefault(); onNavigate('dining'); }
             }, 'View Dining Timings & Menu →')
@@ -928,7 +943,7 @@ function Location({ onNavigate, showButton = false }) {
           ),
           showButton && React.createElement('div', { style: { marginTop: '24px' } },
             React.createElement('a', {
-              href: '#/location',
+              href: getPageUrl('location'),
               className: 'btn btn-gold',
               onClick: (e) => { e.preventDefault(); onNavigate('location'); }
             }, 'Detailed Travel Directions & Landmark Guide →')
@@ -1145,7 +1160,7 @@ function Footer({ onNavigate }) {
             ].map(l =>
               React.createElement('a', {
                 key: l.id,
-                href: `#/${l.id}`,
+                href: getPageUrl(l.id),
                 onClick: (e) => { e.preventDefault(); onNavigate(l.id); }
               }, l.label)
             )
@@ -1157,7 +1172,7 @@ function Footer({ onNavigate }) {
             ROOMS.map(r =>
               React.createElement('a', {
                 key: r.id,
-                href: '#/rooms',
+                href: getPageUrl('rooms'),
                 onClick: (e) => { e.preventDefault(); onNavigate('rooms'); }
               }, `${r.name} — ₹${r.price.toLocaleString('en-IN')}`)
             )
@@ -1624,27 +1639,32 @@ function App() {
   const [currentPage, setCurrentPage] = useState(getPageFromLocation);
   useScrollReveal();
 
+  // If user arrives via an old hash link (e.g. /#/gallery or #gallery), strip it immediately to clean URL
   useEffect(() => {
-    const handleHash = () => {
+    if (window.location.hash) {
+      const page = getPageFromLocation();
+      const cleanUrl = getPageUrl(page);
+      window.history.replaceState(null, '', cleanUrl);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
       const page = getPageFromLocation();
       setCurrentPage(page);
     };
-    window.addEventListener('hashchange', handleHash);
-    window.addEventListener('popstate', handleHash);
+    window.addEventListener('popstate', handlePopState);
     return () => {
-      window.removeEventListener('hashchange', handleHash);
-      window.removeEventListener('popstate', handleHash);
+      window.removeEventListener('popstate', handlePopState);
     };
   }, []);
 
   const navigate = useCallback((page) => {
     setCurrentPage(page);
-    if (page === 'home') {
-      if (window.location.hash) {
-        window.history.pushState(null, '', window.location.pathname.includes('.html') ? 'index.html' : './');
-      }
-    } else {
-      window.location.hash = `#/${page}`;
+    const targetUrl = getPageUrl(page);
+
+    if (window.location.pathname !== targetUrl || window.location.hash) {
+      window.history.pushState(null, '', targetUrl);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
