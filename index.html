@@ -229,15 +229,16 @@
     }
     .navbar-logo { display: flex; align-items: center; gap: var(--space-3); }
     .logo-img {
-      height: 46px; width: auto; max-width: 170px;
+      height: 44px; width: 44px;
       object-fit: contain; flex-shrink: 0;
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.95);
-      padding: 3px 6px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      border-radius: 50%;
+      background: #FFFFFF;
+      padding: 2px;
+      border: 1.5px solid var(--clr-gold);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
       transition: var(--transition-fast);
     }
-    .logo-img:hover { transform: scale(1.02); }
+    .logo-img:hover { transform: scale(1.06); }
     .logo-mark {
       width: 44px; height: 44px; border-radius: var(--radius-sm);
       background: linear-gradient(135deg, var(--clr-gold) 0%, var(--clr-saffron) 100%);
