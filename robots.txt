@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kadvapatelsamaj.com/sitemap.xml
+
+# Disallow admin/system files
+Disallow: /src/
+Disallow: /.htaccess
+
