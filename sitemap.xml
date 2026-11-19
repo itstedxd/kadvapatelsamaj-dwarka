@@ -12,45 +12,52 @@
     <priority>1.00</priority>
   </url>
 
-  <!-- Rooms Section -->
+  <!-- About Page -->
   <url>
-    <loc>https://kadvapatelsamaj.com/#rooms</loc>
+    <loc>https://kadvapatelsamaj.com/about</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Rooms Page -->
+  <url>
+    <loc>https://kadvapatelsamaj.com/rooms</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Dining Page -->
+  <url>
+    <loc>https://kadvapatelsamaj.com/dining</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Gallery Page -->
+  <url>
+    <loc>https://kadvapatelsamaj.com/gallery</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Location Page -->
+  <url>
+    <loc>https://kadvapatelsamaj.com/location</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://kadvapatelsamaj.com/contact</loc>
     <lastmod>2026-11-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
 
-  <!-- Dining Section -->
-  <url>
-    <loc>https://kadvapatelsamaj.com/#dining</loc>
-    <lastmod>2026-11-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-
-  <!-- Gallery Section -->
-  <url>
-    <loc>https://kadvapatelsamaj.com/#gallery</loc>
-    <lastmod>2026-11-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-
-  <!-- Location Section -->
-  <url>
-    <loc>https://kadvapatelsamaj.com/#location</loc>
-    <lastmod>2026-11-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-
-  <!-- Contact Section -->
-  <url>
-    <loc>https://kadvapatelsamaj.com/#contact</loc>
-    <lastmod>2026-11-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-
 </urlset>
-

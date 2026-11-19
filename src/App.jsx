@@ -1,6 +1,6 @@
 // ============================================================
 //  Uma Atithi Gruh — Kadva Patel Samaj, Dwarka
-//  Full React App (CDN / Babel — no build step needed)
+//  Full React App with Multi-Page & Dedicated Category Routing
 // ============================================================
 
 const { useState, useEffect, useRef, useCallback } = React;
@@ -96,17 +96,17 @@ const ROOMS = [
 
 const AMENITIES = [
   { icon: "utensils",        name: "Pure Veg Restaurant",    desc: "No onion, no garlic. Gujarati home food." },
-  { icon: "car",             name: "Free Parking",           desc: "Ample space for cars & buses." },
+  { icon: "car",             name: "Free Parking",           desc: "Ample space for cars & tour buses." },
   { icon: "wifi",            name: "High-Speed Wi-Fi",       desc: "Free Wi-Fi across the property." },
   { icon: "elevator",        name: "Lift / Elevator",        desc: "Elevator access to all floors." },
   { icon: "droplets",        name: "24/7 Hot Water",         desc: "Continuous hot water supply." },
   { icon: "shield-check",    name: "CCTV Security",          desc: "Round-the-clock surveillance." },
   { icon: "zap",             name: "Power Backup",           desc: "Generator backup during outages." },
-  { icon: "leaf",            name: "Drinking Water",         desc: "Purified drinking water supply." },
+  { icon: "leaf",            name: "Drinking Water",         desc: "Purified RO drinking water supply." },
   { icon: "phone",           name: "24h Reception",          desc: "Staff assistance at all times." },
-  { icon: "calendar-check",  name: "Easy Booking",           desc: "Direct & online booking available." },
-  { icon: "users",           name: "Group Bookings",         desc: "Special rates for large groups." },
-  { icon: "temple",          name: "Temple Proximity",       desc: "Walking distance to Dwarkadhish." },
+  { icon: "calendar-check",  name: "Easy Booking",           desc: "Direct calling & WhatsApp support." },
+  { icon: "users",           name: "Group Bookings",         desc: "Special rates for pilgrim sanghs." },
+  { icon: "temple",          name: "Temple Proximity",       desc: "Minutes from Dwarkadhish & Bhadkeshwar." },
 ];
 
 const REVIEWS = [
@@ -172,23 +172,25 @@ const NEARBY = [
 ];
 
 const GALLERY_IMGS = [
-  { src: "assets/images/patel_0edf3123-5a99-4047-b916-0901e97f2d27-1-1.webp", alt: "Uma Atithi Gruh Dwarka exterior" },
-  { src: "assets/images/patel_rooms-3.webp", alt: "Premium AC guest bedroom" },
-  { src: "assets/images/patel_10.webp", alt: "Bhojanalaya dining hall" },
-  { src: "assets/images/patel_rooms-2.webp", alt: "Twin sharing clean room" },
-  { src: "assets/images/patel_sea.webp", alt: "Dwarka Arabian sea face nearby" },
-  { src: "assets/images/patel_031b6256-ec65-4699-af8e-73b5b46df154.webp", alt: "Atithi Gruh entrance & courtyard" },
-  { src: "assets/images/patel_12.webp", alt: "Spiritual sanctum & hall" },
-  { src: "assets/images/patel_rooms-4.webp", alt: "Spacious 4-bed family accommodation" },
+  { src: "assets/images/patel_0edf3123-5a99-4047-b916-0901e97f2d27-1-1.webp", alt: "Uma Atithi Gruh Dwarka exterior view", tag: "Exterior", cat: "campus" },
+  { src: "assets/images/patel_rooms-3.webp", alt: "Premium AC guest bedroom", tag: "AC Room", cat: "rooms" },
+  { src: "assets/images/patel_10.webp", alt: "Bhojanalaya dining hall", tag: "Dining", cat: "dining" },
+  { src: "assets/images/patel_rooms-2.webp", alt: "Twin sharing clean room", tag: "Twin Room", cat: "rooms" },
+  { src: "assets/images/patel_sea.webp", alt: "Dwarka Arabian sea face nearby", tag: "Sea View", cat: "surroundings" },
+  { src: "assets/images/patel_031b6256-ec65-4699-af8e-73b5b46df154.webp", alt: "Atithi Gruh entrance & courtyard", tag: "Courtyard", cat: "campus" },
+  { src: "assets/images/patel_12.webp", alt: "Spiritual sanctum & hall", tag: "Sanctum", cat: "campus" },
+  { src: "assets/images/patel_rooms-4.webp", alt: "Spacious 4-bed family accommodation", tag: "Family Suite", cat: "rooms" },
+  { src: "assets/images/patel_rooms-1.webp", alt: "Standard single bedroom", tag: "Standard", cat: "rooms" },
+  { src: "assets/images/patel_rooms-5.webp", alt: "Deluxe family room sea view", tag: "Deluxe", cat: "rooms" },
+  { src: "assets/images/patel_13.webp", alt: "Dining service area", tag: "Satvik Dining", cat: "dining" },
+  { src: "assets/images/patel_07.webp", alt: "Large group yatra dormitory hall", tag: "Group Hall", cat: "rooms" },
 ];
 
 // ─── CUSTOM SVG ICONS FOR HOSPITALITY & SACRED AMENITIES ───
 const CUSTOM_SVGS = {
-  // WhatsApp brand icon
   whatsapp: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>`,
-  // Telephone / Phone call icons
   phone: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
   </svg>`,
@@ -197,7 +199,6 @@ const CUSTOM_SVGS = {
     <path d="M14.05 2a9 9 0 0 1 8 7.94"/>
     <path d="M14.05 6A5 5 0 0 1 18 10"/>
   </svg>`,
-  // Sacred Hindu Temple / Mandir with Shikhara, Kalash & Flag
   temple: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 2v2m0 0l-2 1.5M12 4l2 1.5M12 2a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6z"/>
     <path d="M12 4l-4 6h8l-4-6z"/>
@@ -206,7 +207,6 @@ const CUSTOM_SVGS = {
     <path d="M10 21v-5a2 2 0 0 1 4 0v5"/>
     <path d="M4 21h16"/>
   </svg>`,
-  // Lift / Elevator hotel icon
   elevator: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <rect x="3" y="2" width="18" height="20" rx="3"/>
     <path d="M12 2v20"/>
@@ -235,13 +235,11 @@ function Icon({ name, size = 18, ...props }) {
     if (!ref.current) return;
     ref.current.innerHTML = '';
     
-    // 1. Direct custom SVG check
     if (CUSTOM_SVGS[name]) {
       ref.current.innerHTML = CUSTOM_SVGS[name](size);
       return;
     }
     
-    // 2. Lucide icons check with smart fallback
     if (window.lucide) {
       const camel = toCamel(name);
       let svg = lucide[camel] ? lucide.createElement(lucide[camel]) : null;
@@ -281,11 +279,33 @@ function Stars({ rating, size = 14 }) {
   );
 }
 
+// ─── PAGE HEADER BANNER (FOR DEDICATED CATEGORY PAGES) ───────
+function PageHeader({ eyebrow, title, subtitle, breadcrumb, onHome }) {
+  return React.createElement('div', { className: 'page-hero' },
+    React.createElement('div', { className: 'page-hero-pattern' }),
+    React.createElement('div', { className: 'container', style: { position: 'relative', zIndex: 1 } },
+      eyebrow && React.createElement('div', { className: 'page-hero-eyebrow' },
+        React.createElement(Icon, { name: 'sparkles', size: 14 }),
+        ' ' + eyebrow
+      ),
+      React.createElement('h1', { className: 'page-hero-title' }, title),
+      subtitle && React.createElement('p', { className: 'page-hero-subtitle' }, subtitle),
+      React.createElement('div', { className: 'page-breadcrumb' },
+        React.createElement('a', {
+          href: '#home',
+          onClick: (e) => { e.preventDefault(); onHome(); }
+        }, 'Home'),
+        React.createElement('span', { className: 'page-breadcrumb-separator' }, '/'),
+        React.createElement('span', null, breadcrumb)
+      )
+    )
+  );
+}
+
 // ─── NAVBAR ──────────────────────────────────────────────────
-function Navbar({ onBook }) {
+function Navbar({ currentPage, onNavigate, onBook }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [active, setActive] = useState('home');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -302,20 +322,15 @@ function Navbar({ onBook }) {
     { id: 'contact',  label: 'Contact'  },
   ];
 
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setActive(id);
-      setMenuOpen(false);
-    }
-  };
-
   return React.createElement(React.Fragment, null,
     React.createElement('nav', { className: `navbar${scrolled ? ' scrolled' : ''}` },
       React.createElement('div', { className: 'navbar-inner' },
         // Logo
-        React.createElement('a', { href: '#home', className: 'navbar-logo', onClick: (e) => { e.preventDefault(); scrollTo('home'); } },
+        React.createElement('a', {
+          href: '#home',
+          className: 'navbar-logo',
+          onClick: (e) => { e.preventDefault(); onNavigate('home'); }
+        },
           React.createElement('img', {
             src: 'assets/images/emblem_umiya.webp',
             alt: 'Shri Umiya Mataji Emblem',
@@ -332,9 +347,9 @@ function Navbar({ onBook }) {
           links.map(l =>
             React.createElement('a', {
               key: l.id,
-              href: `#${l.id}`,
-              className: `nav-link${active === l.id ? ' active' : ''}`,
-              onClick: (e) => { e.preventDefault(); scrollTo(l.id); }
+              href: `#/${l.id}`,
+              className: `nav-link${currentPage === l.id ? ' active' : ''}`,
+              onClick: (e) => { e.preventDefault(); onNavigate(l.id); }
             }, l.label)
           )
         ),
@@ -367,9 +382,9 @@ function Navbar({ onBook }) {
       links.map(l =>
         React.createElement('a', {
           key: l.id,
-          href: `#${l.id}`,
-          className: 'nav-link',
-          onClick: (e) => { e.preventDefault(); scrollTo(l.id); }
+          href: `#/${l.id}`,
+          className: `nav-link${currentPage === l.id ? ' active' : ''}`,
+          onClick: (e) => { e.preventDefault(); setMenuOpen(false); onNavigate(l.id); }
         }, l.label)
       ),
       React.createElement('a', {
@@ -389,7 +404,7 @@ function Navbar({ onBook }) {
 }
 
 // ─── HERO ────────────────────────────────────────────────────
-function Hero({ onBook }) {
+function Hero({ onBook, onNavigate }) {
   return React.createElement('section', { id: 'home', className: 'hero' },
     React.createElement('div', { className: 'hero-bg' },
       React.createElement('img', {
@@ -419,7 +434,12 @@ function Hero({ onBook }) {
           React.createElement(Icon, { name: 'phone', size: 16 }),
           ' Book Your Stay'
         ),
-        React.createElement('a', { className: 'btn btn-white', href: '#rooms', style: { textDecoration: 'none' } },
+        React.createElement('a', {
+          className: 'btn btn-white',
+          href: '#/rooms',
+          style: { textDecoration: 'none' },
+          onClick: (e) => { e.preventDefault(); onNavigate('rooms'); }
+        },
           React.createElement(Icon, { name: 'bed-double', size: 16 }),
           ' View Rooms'
         )
@@ -446,7 +466,7 @@ function Hero({ onBook }) {
         )
       )
     ),
-    React.createElement('div', { className: 'hero-scroll' },
+    React.createElement('div', { className: 'hero-scroll', onClick: () => onNavigate('about') },
       React.createElement(Icon, { name: 'chevrons-down', size: 20 }),
       React.createElement('span', null, 'Scroll')
     )
@@ -478,7 +498,7 @@ function TrustStrip() {
 }
 
 // ─── ABOUT ───────────────────────────────────────────────────
-function About() {
+function About({ onNavigate, showButton = false }) {
   const features = [
     { icon: 'temple',       label: 'Spiritual Setting',   desc: 'Near Dwarkadhish & Bhadkeshwar temples' },
     { icon: 'utensils',     label: 'Satvik Dining',       desc: 'Pure veg, no onion-garlic Gujarati meals' },
@@ -532,6 +552,13 @@ function About() {
                 )
               )
             )
+          ),
+          showButton && React.createElement('div', { style: { marginTop: '28px' } },
+            React.createElement('a', {
+              href: '#/about',
+              className: 'btn btn-gold',
+              onClick: (e) => { e.preventDefault(); onNavigate('about'); }
+            }, 'Read More About Us →')
           )
         )
       )
@@ -567,13 +594,13 @@ function Amenities() {
 }
 
 // ─── ROOMS ───────────────────────────────────────────────────
-function Rooms({ onBook }) {
+function Rooms({ onBook, limit, onNavigate }) {
   const [filter, setFilter] = useState('all');
   const filters = [
-    { id: 'all',   label: 'All Rooms' },
+    { id: 'all',    label: 'All Rooms' },
     { id: 'non-ac', label: 'Non-AC' },
-    { id: 'ac',    label: 'Air-Conditioned' },
-    { id: 'group', label: 'Group' },
+    { id: 'ac',     label: 'Air-Conditioned' },
+    { id: 'group',  label: 'Group' },
   ];
 
   const filtered = ROOMS.filter(r => {
@@ -583,6 +610,8 @@ function Rooms({ onBook }) {
     if (filter === 'group') return r.beds >= 15;
     return true;
   });
+
+  const displayRooms = limit ? filtered.slice(0, limit) : filtered;
 
   return React.createElement('section', { id: 'rooms', className: 'section' },
     React.createElement('div', { className: 'container' },
@@ -604,9 +633,16 @@ function Rooms({ onBook }) {
         )
       ),
       React.createElement('div', { className: 'rooms-grid' },
-        filtered.map((room, i) =>
+        displayRooms.map((room, i) =>
           React.createElement(RoomCard, { key: room.id, room, onBook, delay: i * 0.08 })
         )
+      ),
+      limit && onNavigate && React.createElement('div', { style: { textAlign: 'center', marginTop: '40px' } },
+        React.createElement('button', {
+          className: 'btn btn-gold',
+          style: { padding: '14px 32px' },
+          onClick: () => onNavigate('rooms')
+        }, 'View All 6 Room Types & Dormitory →')
       )
     )
   );
@@ -654,7 +690,7 @@ function RoomCard({ room, onBook, delay }) {
           className: 'room-book-btn',
           href: 'tel:+918604900990',
           style: { textDecoration: 'none' },
-          onClick: () => onBook(room)
+          onClick: onBook
         }, 'Book Now')
       )
     )
@@ -662,27 +698,65 @@ function RoomCard({ room, onBook, delay }) {
 }
 
 // ─── GALLERY ─────────────────────────────────────────────────
-function Gallery() {
+function Gallery({ limit, onNavigate }) {
+  const [activeTab, setActiveTab] = useState('all');
+
+  const filtered = GALLERY_IMGS.filter(img => {
+    if (activeTab === 'all') return true;
+    return img.cat === activeTab;
+  });
+
+  const displayImgs = limit ? filtered.slice(0, limit) : filtered;
+
   return React.createElement('section', { id: 'gallery', className: 'section amenities-bg' },
     React.createElement('div', { className: 'container' },
-      React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-10)' } },
+      React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-8)' } },
         React.createElement('div', { className: 'section-label' }, 'Gallery'),
         React.createElement('h2', { className: 'section-title' }, 'A Glimpse of\nYour Home Away'),
         React.createElement('div', { className: 'divider divider-center' })
       ),
+      !limit && React.createElement('div', { className: 'filter-tabs' },
+        [
+          { id: 'all', label: 'All Photos' },
+          { id: 'rooms', label: 'Guest Rooms' },
+          { id: 'dining', label: 'Bhojanalaya' },
+          { id: 'campus', label: 'Campus & Sanctum' },
+          { id: 'surroundings', label: 'Sea & Vicinity' }
+        ].map(t =>
+          React.createElement('button', {
+            key: t.id,
+            className: `filter-tab${activeTab === t.id ? ' active' : ''}`,
+            onClick: () => setActiveTab(t.id)
+          }, t.label)
+        )
+      ),
       React.createElement('div', { className: 'gallery-grid reveal' },
-        GALLERY_IMGS.map((img, i) =>
+        displayImgs.map((img, i) =>
           React.createElement('div', { key: i, className: 'gallery-item' },
-            React.createElement('img', { src: img.src, alt: img.alt, loading: 'lazy' })
+            React.createElement('img', { src: img.src, alt: img.alt, loading: 'lazy' }),
+            img.tag && React.createElement('span', {
+              style: {
+                position: 'absolute', bottom: '12px', left: '12px',
+                background: 'rgba(0,0,0,0.65)', color: 'white',
+                padding: '3px 10px', borderRadius: '4px', fontSize: '12px',
+                backdropFilter: 'blur(4px)', fontWeight: 500
+              }
+            }, img.tag)
           )
         )
+      ),
+      limit && onNavigate && React.createElement('div', { style: { textAlign: 'center', marginTop: '36px' } },
+        React.createElement('button', {
+          className: 'btn btn-gold',
+          onClick: () => onNavigate('gallery')
+        }, 'Browse Full Photo Gallery →')
       )
     )
   );
 }
 
 // ─── DINING ──────────────────────────────────────────────────
-function Dining() {
+function Dining({ onNavigate, showButton = false }) {
   const menuItems = [
     { icon: '🍲', name: 'Gujarati Thali',       desc: 'Full traditional thali with 15+ items' },
     { icon: '🫙', name: 'Dal-Baati-Churma',      desc: 'Rajasthani specialty on request' },
@@ -712,6 +786,13 @@ function Dining() {
             React.createElement('div', { className: 'badge', style: { background: 'rgba(197,151,58,0.15)', color: 'var(--clr-gold-light)', border: '1px solid rgba(197,151,58,0.3)' } }, '100% Pure Veg'),
             React.createElement('div', { className: 'badge', style: { background: 'rgba(197,151,58,0.15)', color: 'var(--clr-gold-light)', border: '1px solid rgba(197,151,58,0.3)' } }, 'No Onion No Garlic'),
             React.createElement('div', { className: 'badge', style: { background: 'rgba(197,151,58,0.15)', color: 'var(--clr-gold-light)', border: '1px solid rgba(197,151,58,0.3)' } }, 'Group Meals Available')
+          ),
+          showButton && React.createElement('div', { style: { marginTop: '28px' } },
+            React.createElement('a', {
+              href: '#/dining',
+              className: 'btn btn-gold',
+              onClick: (e) => { e.preventDefault(); onNavigate('dining'); }
+            }, 'View Dining Timings & Menu →')
           )
         ),
         React.createElement('div', { className: 'dining-imgs reveal reveal-delay-2' },
@@ -791,7 +872,7 @@ function Reviews() {
 }
 
 // ─── LOCATION ────────────────────────────────────────────────
-function Location() {
+function Location({ onNavigate, showButton = false }) {
   return React.createElement('section', { id: 'location', className: 'section location-bg' },
     React.createElement('div', { className: 'container' },
       React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-12)' } },
@@ -839,11 +920,18 @@ function Location() {
               React.createElement('div', { key: i, className: 'nearby-item' },
                 React.createElement('div', { className: 'nearby-name' },
                   React.createElement(Icon, { name: 'map-pin', size: 13 }),
-                  n.name
+                  ' ' + n.name
                 ),
                 React.createElement('div', { className: 'nearby-dist' }, n.dist)
               )
             )
+          ),
+          showButton && React.createElement('div', { style: { marginTop: '24px' } },
+            React.createElement('a', {
+              href: '#/location',
+              className: 'btn btn-gold',
+              onClick: (e) => { e.preventDefault(); onNavigate('location'); }
+            }, 'Detailed Travel Directions & Landmark Guide →')
           )
         )
       )
@@ -858,7 +946,7 @@ function BookingCTA({ onBook }) {
       React.createElement('div', { className: 'booking-cta-inner' },
         React.createElement('div', null,
           React.createElement('h2', { className: 'booking-cta-title' }, 'Ready for Your\nDwarka Yatra?'),
-          React.createElement('p', { className: 'booking-cta-sub' }, 'Book directly for best rates. No booking fees, no hidden charges.')
+          React.createElement('p', { className: 'booking-cta-sub' }, 'Book directly by phone for best rates and immediate confirmation. No agent commission.')
         ),
         React.createElement('div', { className: 'booking-cta-actions' },
           React.createElement('a', {
@@ -868,11 +956,17 @@ function BookingCTA({ onBook }) {
             onClick: onBook
           },
             React.createElement(Icon, { name: 'phone', size: 16 }),
-            ' Book a Room'
+            ' Call +91 86049 00990'
           ),
-          React.createElement('a', { className: 'btn btn-outline', href: 'tel:+918604900990', style: { borderColor: 'white', color: 'white', textDecoration: 'none' } },
-            React.createElement(Icon, { name: 'phone', size: 16 }),
-            ' Call Reception'
+          React.createElement('a', {
+            className: 'btn btn-outline',
+            href: 'https://wa.me/918604900990?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20room%20availability%20at%20Uma%20Atithi%20Gruh%20Dwarka.',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            style: { borderColor: 'white', color: 'white', textDecoration: 'none' }
+          },
+            React.createElement(Icon, { name: 'whatsapp', size: 16 }),
+            ' Chat on WhatsApp'
           )
         )
       )
@@ -888,9 +982,13 @@ function Contact() {
   const handleChange = (e) => setFormState(s => ({ ...s, [e.target.name]: e.target.value }));
   const handleSubmit = (e) => {
     e.preventDefault();
-    setToast({ msg: '✓ Enquiry sent! We will contact you within 2 hours.', type: 'success' });
+    setToast({ msg: '✓ Enquiry received! Our reception team will call you within 2 hours.', type: 'success' });
     setTimeout(() => setToast(null), 5000);
   };
+
+  const whatsappMsg = encodeURIComponent(
+    `Hello, I would like to book a stay at Uma Atithi Gruh Dwarka.\nName: ${formState.name || 'Guest'}\nPhone: ${formState.phone || 'N/A'}\nRoom: ${formState.room || 'Any'}\nDates: ${formState.checkin || 'TBD'} to ${formState.checkout || 'TBD'}`
+  );
 
   return React.createElement('section', { id: 'contact', className: 'section' },
     React.createElement('div', { className: 'container' },
@@ -904,9 +1002,9 @@ function Contact() {
           React.createElement('h3', { style: { fontFamily: 'var(--ff-display)', fontSize: '22px', fontWeight: 600, marginBottom: '20px', color: 'var(--clr-deep)' } }, 'Contact Information'),
           React.createElement('div', { className: 'contact-cards' },
             [
-              { icon: 'phone',   label: 'Phone',    value: '+91 86049 00990', hint: '24-hour reception' },
-              { icon: 'mail',    label: 'Email',    value: 'contact@kadvapatelsamaj.net', hint: 'Enquiries & bookings' },
-              { icon: 'map-pin', label: 'Address',  value: 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat 361335', hint: 'GPS: 22.2461°N 68.9574°E' },
+              { icon: 'phone',   label: 'Phone (Calling & Booking)', value: '+91 86049 00990', hint: '24-hour reception desk' },
+              { icon: 'mail',    label: 'Email',                     value: 'contact@kadvapatelsamaj.net', hint: 'Response within 24 hours' },
+              { icon: 'map-pin', label: 'Address',                   value: 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat 361335', hint: 'GPS: 22.2461°N, 68.9574°E' },
             ].map((c, i) =>
               React.createElement('div', { key: i, className: 'contact-card' },
                 React.createElement('div', { className: 'contact-icon' },
@@ -914,11 +1012,33 @@ function Contact() {
                 ),
                 React.createElement('div', null,
                   React.createElement('div', { className: 'contact-label' }, c.label),
-                  React.createElement('div', { className: 'contact-value' }, c.value),
+                  React.createElement('div', { className: 'contact-value' },
+                    c.label.includes('Phone')
+                      ? React.createElement('a', { href: 'tel:+918604900990', style: { color: 'inherit', textDecoration: 'none' } }, c.value)
+                      : c.label.includes('Email')
+                        ? React.createElement('a', { href: 'mailto:contact@kadvapatelsamaj.net', style: { color: 'inherit', textDecoration: 'none' } }, c.value)
+                        : c.value
+                  ),
                   React.createElement('div', { className: 'contact-hint' }, c.hint)
                 )
               )
             )
+          ),
+          React.createElement('div', { style: { marginTop: '24px', padding: '20px', background: 'var(--clr-cream)', borderRadius: '12px', border: '1px solid var(--clr-border)' } },
+            React.createElement('div', { style: { fontWeight: 600, color: 'var(--clr-deep)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' } },
+              React.createElement(Icon, { name: 'whatsapp', size: 18 }),
+              'Instant WhatsApp Support'
+            ),
+            React.createElement('p', { style: { fontSize: '13.5px', color: 'var(--clr-text-muted)', marginBottom: '12px', lineHeight: 1.6 } },
+              'Prefer messaging? Chat directly with our manager on WhatsApp for quick confirmation and room photos.'
+            ),
+            React.createElement('a', {
+              href: `https://wa.me/918604900990?text=${whatsappMsg}`,
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              className: 'btn btn-gold',
+              style: { padding: '10px 18px', fontSize: '13px', display: 'inline-flex' }
+            }, '💬 Open WhatsApp Chat')
           )
         ),
         React.createElement('div', { className: 'contact-form reveal reveal-delay-2' },
@@ -931,7 +1051,7 @@ function Contact() {
               ),
               React.createElement('div', { className: 'form-group' },
                 React.createElement('label', { className: 'form-label' }, 'Phone *'),
-                React.createElement('input', { type: 'tel', name: 'phone', className: 'form-input', placeholder: '+91 98765 43210', required: true, value: formState.phone, onChange: handleChange })
+                React.createElement('input', { type: 'tel', name: 'phone', className: 'form-input', placeholder: '+91 86049 00990', required: true, value: formState.phone, onChange: handleChange })
               )
             ),
             React.createElement('div', { className: 'form-group' },
@@ -953,7 +1073,7 @@ function Contact() {
                 React.createElement('label', { className: 'form-label' }, 'Room Type'),
                 React.createElement('select', { name: 'room', className: 'form-select', value: formState.room, onChange: handleChange },
                   React.createElement('option', { value: '' }, 'Select room type'),
-                  ROOMS.map(r => React.createElement('option', { key: r.id, value: r.name }, r.name))
+                  ROOMS.map(r => React.createElement('option', { key: r.id, value: r.name }, `${r.name} (₹${r.price.toLocaleString('en-IN')})`))
                 )
               ),
               React.createElement('div', { className: 'form-group' },
@@ -962,8 +1082,8 @@ function Contact() {
               )
             ),
             React.createElement('div', { className: 'form-group' },
-              React.createElement('label', { className: 'form-label' }, 'Message'),
-              React.createElement('textarea', { name: 'message', className: 'form-textarea', placeholder: 'Any special requirements or questions...', value: formState.message, onChange: handleChange })
+              React.createElement('label', { className: 'form-label' }, 'Message or Special Requests'),
+              React.createElement('textarea', { name: 'message', className: 'form-textarea', placeholder: 'Arrival time, elderly assistance, or group meal requirements...', value: formState.message, onChange: handleChange })
             ),
             React.createElement('button', { type: 'submit', className: 'form-submit' },
               React.createElement(Icon, { name: 'send', size: 15 }),
@@ -981,7 +1101,7 @@ function Contact() {
 }
 
 // ─── FOOTER ──────────────────────────────────────────────────
-function Footer() {
+function Footer({ onNavigate }) {
   const year = new Date().getFullYear();
   return React.createElement('footer', { className: 'footer' },
     React.createElement('div', { className: 'container' },
@@ -1012,26 +1132,42 @@ function Footer() {
           )
         ),
         React.createElement('div', null,
-          React.createElement('div', { className: 'footer-heading' }, 'Quick Links'),
+          React.createElement('div', { className: 'footer-heading' }, 'Navigation'),
           React.createElement('div', { className: 'footer-links' },
-            ['About Us', 'Our Rooms', 'Dining', 'Gallery', 'Location', 'Contact'].map((l, i) =>
-              React.createElement('a', { key: i, href: `#${l.toLowerCase().replace(/ /g, '')}` }, l)
+            [
+              { id: 'home', label: 'Home' },
+              { id: 'about', label: 'About Us' },
+              { id: 'rooms', label: 'Our Rooms' },
+              { id: 'dining', label: 'Dining' },
+              { id: 'gallery', label: 'Gallery' },
+              { id: 'location', label: 'Location' },
+              { id: 'contact', label: 'Contact' },
+            ].map(l =>
+              React.createElement('a', {
+                key: l.id,
+                href: `#/${l.id}`,
+                onClick: (e) => { e.preventDefault(); onNavigate(l.id); }
+              }, l.label)
             )
           )
         ),
         React.createElement('div', null,
-          React.createElement('div', { className: 'footer-heading' }, 'Room Types'),
+          React.createElement('div', { className: 'footer-heading' }, 'Room Categories'),
           React.createElement('div', { className: 'footer-links' },
             ROOMS.map(r =>
-              React.createElement('a', { key: r.id, href: '#rooms' }, `${r.name} — ₹${r.price.toLocaleString('en-IN')}`)
+              React.createElement('a', {
+                key: r.id,
+                href: '#/rooms',
+                onClick: (e) => { e.preventDefault(); onNavigate('rooms'); }
+              }, `${r.name} — ₹${r.price.toLocaleString('en-IN')}`)
             )
           )
         ),
         React.createElement('div', null,
-          React.createElement('div', { className: 'footer-heading' }, 'Contact'),
+          React.createElement('div', { className: 'footer-heading' }, 'Contact Desk'),
           React.createElement('div', { className: 'footer-links' },
-            React.createElement('a', { href: 'tel:+918604900990' }, '+91 86049 00990'),
-            React.createElement('a', { href: 'mailto:contact@kadvapatelsamaj.net' }, 'contact@kadvapatelsamaj.net'),
+            React.createElement('a', { href: 'tel:+918604900990' }, '📞 +91 86049 00990'),
+            React.createElement('a', { href: 'mailto:contact@kadvapatelsamaj.net' }, '✉️ contact@kadvapatelsamaj.net'),
             React.createElement('span', { style: { color: 'rgba(255,255,255,0.4)', fontSize: 13, lineHeight: 1.6 } }, 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat 361335')
           )
         )
@@ -1044,131 +1180,6 @@ function Footer() {
           'Managed by ',
           React.createElement('span', null, 'Shri Umiya Mataji Mandir Trust, Sidsar')
         )
-      )
-    )
-  );
-}
-
-// ─── BOOKING MODAL ───────────────────────────────────────────
-function BookingModal({ room, onClose }) {
-  const [step, setStep] = useState(1);
-  const [form, setForm] = useState({
-    name: '', phone: '', email: '',
-    checkin: '', checkout: '',
-    room: room ? room.name : '',
-    guests: room ? room.capacity : '2',
-    message: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleChange = (e) => setForm(s => ({ ...s, [e.target.name]: e.target.value }));
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
-  }, []);
-
-  const whatsappMsg = encodeURIComponent(
-    `Hello, I'd like to book a room at Uma Atithi Gruh Dwarka.\n\nName: ${form.name}\nPhone: ${form.phone}\nCheck-in: ${form.checkin}\nCheck-out: ${form.checkout}\nRoom: ${form.room}\nGuests: ${form.guests}`
-  );
-
-  return React.createElement('div', {
-    className: 'modal-overlay',
-    onClick: (e) => { if (e.target === e.currentTarget) onClose(); }
-  },
-    React.createElement('div', { className: 'modal' },
-      React.createElement('button', { className: 'modal-close', onClick: onClose, 'aria-label': 'Close' },
-        React.createElement(Icon, { name: 'x', size: 18 })
-      ),
-      !submitted ? React.createElement(React.Fragment, null,
-        React.createElement('h2', { className: 'modal-title' }, room ? `Book ${room.name}` : 'Book a Room'),
-        React.createElement('p', { className: 'modal-sub' },
-          room
-            ? `₹${room.price.toLocaleString('en-IN')}/night • ${room.type} • Up to ${room.capacity} guests`
-            : 'Fill in your details and we\'ll confirm your booking within 2 hours.'
-        ),
-        React.createElement('form', { onSubmit: handleSubmit },
-          React.createElement('div', { className: 'form-row' },
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', { className: 'form-label' }, 'Full Name *'),
-              React.createElement('input', { type: 'text', name: 'name', className: 'form-input', placeholder: 'Your name', required: true, value: form.name, onChange: handleChange })
-            ),
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', { className: 'form-label' }, 'Phone *'),
-              React.createElement('input', { type: 'tel', name: 'phone', className: 'form-input', placeholder: '+91 xxxxx xxxxx', required: true, value: form.phone, onChange: handleChange })
-            )
-          ),
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', { className: 'form-label' }, 'Email Address'),
-            React.createElement('input', { type: 'email', name: 'email', className: 'form-input', placeholder: 'your@email.com', value: form.email, onChange: handleChange })
-          ),
-          React.createElement('div', { className: 'form-row' },
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', { className: 'form-label' }, 'Check-In *'),
-              React.createElement('input', { type: 'date', name: 'checkin', className: 'form-input', required: true, value: form.checkin, onChange: handleChange })
-            ),
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', { className: 'form-label' }, 'Check-Out *'),
-              React.createElement('input', { type: 'date', name: 'checkout', className: 'form-input', required: true, value: form.checkout, onChange: handleChange })
-            )
-          ),
-          React.createElement('div', { className: 'form-row' },
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', { className: 'form-label' }, 'Room Type *'),
-              React.createElement('select', { name: 'room', className: 'form-select', required: true, value: form.room, onChange: handleChange },
-                React.createElement('option', { value: '' }, 'Select…'),
-                ROOMS.map(r => React.createElement('option', { key: r.id, value: r.name }, `${r.name} — ₹${r.price.toLocaleString('en-IN')}`))
-              )
-            ),
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', { className: 'form-label' }, 'Guests'),
-              React.createElement('input', { type: 'number', name: 'guests', min: 1, max: 20, className: 'form-input', value: form.guests, onChange: handleChange })
-            )
-          ),
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', { className: 'form-label' }, 'Special Requests'),
-            React.createElement('textarea', { name: 'message', className: 'form-textarea', style: { minHeight: '80px' }, placeholder: 'Any special requirements?', value: form.message, onChange: handleChange })
-          ),
-          React.createElement('button', { type: 'submit', className: 'form-submit' }, 'Confirm Enquiry'),
-          React.createElement('div', { style: { textAlign: 'center', marginTop: '12px' } },
-            React.createElement('a', {
-              href: `https://wa.me/918604900990?text=${whatsappMsg}`,
-              target: '_blank',
-              rel: 'noopener noreferrer',
-              style: { display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#25D366', fontWeight: 600 }
-            },
-              '💬 Book via WhatsApp'
-            )
-          )
-        )
-      ) :
-      // Success state
-      React.createElement('div', { style: { textAlign: 'center', padding: '24px 0' } },
-        React.createElement('div', { style: { width: 72, height: 72, borderRadius: '50%', background: 'linear-gradient(135deg,var(--clr-gold),var(--clr-saffron))', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: 'white' } },
-          React.createElement(Icon, { name: 'check', size: 36 })
-        ),
-        React.createElement('h3', { style: { fontFamily: 'var(--ff-display)', fontSize: '26px', color: 'var(--clr-deep)', marginBottom: '8px' } }, 'Enquiry Received!'),
-        React.createElement('p', { style: { color: 'var(--clr-text-muted)', lineHeight: 1.6, marginBottom: '24px' } },
-          `Thank you, ${form.name}! Our team will contact you at ${form.phone || form.email} within 2 hours to confirm your booking.`
-        ),
-        React.createElement('div', { style: { background: 'var(--clr-cream)', borderRadius: 12, padding: '16px', marginBottom: '20px', textAlign: 'left' } },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 600, marginBottom: 8, color: 'var(--clr-dark)' } }, 'Booking Summary'),
-          [['Room', form.room], ['Check-in', form.checkin], ['Check-out', form.checkout], ['Guests', form.guests]].map(([k, v]) =>
-            v && React.createElement('div', { key: k, style: { display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--clr-text-muted)', padding: '3px 0' } },
-              React.createElement('span', null, k), React.createElement('span', { style: { fontWeight: 500, color: 'var(--clr-dark)' } }, v)
-            )
-          )
-        ),
-        React.createElement('a', {
-          href: `https://wa.me/918604900990?text=${whatsappMsg}`,
-          target: '_blank', rel: 'noopener noreferrer',
-          className: 'btn btn-gold', style: { width: '100%', justifyContent: 'center' }
-        }, '💬 Also message us on WhatsApp'),
-        React.createElement('button', { onClick: onClose, style: { marginTop: 12, color: 'var(--clr-text-muted)', fontSize: 13 } }, 'Close')
       )
     )
   );
@@ -1222,28 +1233,462 @@ function WhatsAppFloat() {
   );
 }
 
-// ─── APP ROOT ─────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// ─── DEDICATED FULL PAGES ──────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+
+// 1. HOME PAGE
+function HomePage({ onBook, onNavigate }) {
+  return React.createElement(React.Fragment, null,
+    React.createElement(Hero, { onBook, onNavigate }),
+    React.createElement(TrustStrip),
+    React.createElement(About, { onNavigate, showButton: true }),
+    React.createElement(Amenities),
+    React.createElement(Rooms, { onBook, limit: 3, onNavigate }),
+    React.createElement(Dining, { onNavigate, showButton: true }),
+    React.createElement(Gallery, { limit: 6, onNavigate }),
+    React.createElement(Reviews),
+    React.createElement(Location, { onNavigate, showButton: true }),
+    React.createElement(BookingCTA, { onBook })
+  );
+}
+
+// 2. ABOUT PAGE
+function AboutPage({ onBook, onHome, onNavigate }) {
+  const pillars = [
+    {
+      icon: 'shield-check',
+      title: 'Trust & Governance',
+      text: 'Managed under the direct patronage of Shri Umiya Mataji Mandir Trust (Sidsar), ensuring ethical standards, non-profit community pricing, and dedicated spiritual service to all pilgrims.'
+    },
+    {
+      icon: 'heart',
+      title: 'Pilgrim-Centric Hospitality',
+      text: 'With 24-hour reception, lift access for elderly devotees, purified drinking water, and safe luggage storage, we cater to every need of yatra devotees from across Gujarat and India.'
+    },
+    {
+      icon: 'sparkles',
+      title: 'Purity & Cleanliness',
+      text: 'Hygiene is our highest priority. All rooms feature sanitized attached bathrooms, fresh bedding, and round-the-clock hot water, with peaceful sea breezes from the Arabian Sea.'
+    }
+  ];
+
+  return React.createElement(React.Fragment, null,
+    React.createElement(PageHeader, {
+      eyebrow: 'Shri Umiya Mataji Mandir Trust, Sidsar',
+      title: 'About Uma Atithi Gruh',
+      subtitle: 'Over 20 years of sacred hospitality, community trust, and satvik living in the holy land of Dwarka.',
+      breadcrumb: 'About Us',
+      onHome
+    }),
+    React.createElement(TrustStrip),
+    React.createElement(About, { onNavigate, showButton: false }),
+    // Detailed Pillars Section
+    React.createElement('section', { className: 'page-section', style: { background: 'var(--clr-surface)' } },
+      React.createElement('div', { className: 'container' },
+        React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-10)' } },
+          React.createElement('div', { className: 'section-label' }, 'Our Foundation'),
+          React.createElement('h2', { className: 'section-title' }, 'Guided by Community Values'),
+          React.createElement('div', { className: 'divider divider-center' })
+        ),
+        React.createElement('div', { className: 'page-grid-3' },
+          pillars.map((p, i) =>
+            React.createElement('div', { key: i, className: 'info-card' },
+              React.createElement('div', { className: 'info-card-icon' },
+                React.createElement(Icon, { name: p.icon, size: 24 })
+              ),
+              React.createElement('div', { className: 'info-card-title' }, p.title),
+              React.createElement('div', { className: 'info-card-text' }, p.text)
+            )
+          )
+        )
+      )
+    ),
+    React.createElement(Amenities),
+    React.createElement(Reviews),
+    React.createElement(BookingCTA, { onBook })
+  );
+}
+
+// 3. ROOMS PAGE
+function RoomsPage({ onBook, onHome }) {
+  const guidelines = [
+    {
+      icon: 'clock',
+      title: 'Check-in & Check-out',
+      text: 'Check-in time is 11:00 AM and Check-out is 10:00 AM. 24-hour reception is available for late-night pilgrim arrivals.'
+    },
+    {
+      icon: 'droplets',
+      title: '24/7 Hot Water & Power',
+      text: 'All guest rooms are equipped with geysers for uninterrupted hot water and generator backup during city power outages.'
+    },
+    {
+      icon: 'elevator',
+      title: 'Full Elevator Access',
+      text: 'Modern passenger elevator reaches all residential floors, making stays comfortable for senior citizens and families.'
+    },
+    {
+      icon: 'car',
+      title: 'Free On-Site Parking',
+      text: 'Spacious secured parking inside our premises for private cars, mini-coaches, and large pilgrim buses.'
+    }
+  ];
+
+  return React.createElement(React.Fragment, null,
+    React.createElement(PageHeader, {
+      eyebrow: 'Accommodation & Tariffs',
+      title: 'Our Rooms & Suites',
+      subtitle: 'Clean, peaceful, and affordable stays in Dwarka for solo pilgrims, families, and yatra groups. All rooms feature attached baths and 24/7 hot water.',
+      breadcrumb: 'Rooms',
+      onHome
+    }),
+    React.createElement(Rooms, { onBook, limit: null }),
+    // Room Guidelines & Inclusions
+    React.createElement('section', { className: 'page-section', style: { background: 'var(--clr-surface)' } },
+      React.createElement('div', { className: 'container' },
+        React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-10)' } },
+          React.createElement('div', { className: 'section-label' }, 'Guest Guidelines'),
+          React.createElement('h2', { className: 'section-title' }, 'Room Inclusions & Policies'),
+          React.createElement('div', { className: 'divider divider-center' })
+        ),
+        React.createElement('div', { className: 'page-grid-2' },
+          guidelines.map((g, i) =>
+            React.createElement('div', { key: i, className: 'info-card' },
+              React.createElement('div', { className: 'info-card-icon' },
+                React.createElement(Icon, { name: g.icon, size: 24 })
+              ),
+              React.createElement('div', { className: 'info-card-title' }, g.title),
+              React.createElement('div', { className: 'info-card-text' }, g.text)
+            )
+          )
+        )
+      )
+    ),
+    React.createElement(BookingCTA, { onBook })
+  );
+}
+
+// 4. DINING PAGE
+function DiningPage({ onBook, onHome }) {
+  const mealTimings = [
+    {
+      badge: 'Morning',
+      time: '07:00 AM – 09:30 AM',
+      title: 'Nasto (Morning Breakfast)',
+      desc: 'Hot fresh Gujarati breakfast: ginger tea / hot milk, poha, upma, thepla, bhakri, and traditional savories.'
+    },
+    {
+      badge: 'Afternoon',
+      time: '11:30 AM – 02:30 PM',
+      title: 'Rajbhog Gujarati Thali',
+      desc: 'Authentic satvik thali with 2 seasonal vegetables, freshly puffed rotli/puri, Gujarati dal-bhat, farsan, sweet dish, papad, pickle & fresh chaas.'
+    },
+    {
+      badge: 'Evening',
+      time: '07:00 PM – 09:30 PM',
+      title: 'Valu (Satvik Dinner)',
+      desc: 'Comforting, light dinner featuring piping-hot Gujarati kadhi-khichdi, seasonal shaak, millet rotla / bhakri, and fresh milk.'
+    }
+  ];
+
+  const standards = [
+    {
+      icon: 'leaf',
+      title: '100% Satvik & Jain Compliant',
+      text: 'Prepared strictly without onion, garlic, or root vegetables. Adheres faithfully to Vaishnav and Jain dietary principles.'
+    },
+    {
+      icon: 'droplets',
+      title: 'Commercial RO Drinking Water',
+      text: 'Only purified drinking water is utilized for cooking and served to guests in the dining hall.'
+    },
+    {
+      icon: 'users',
+      title: 'Large Group Yatra Catering',
+      text: 'Special group dining arrangements for pilgrim sanghs and bus tours with prior notification at reception.'
+    }
+  ];
+
+  return React.createElement(React.Fragment, null,
+    React.createElement(PageHeader, {
+      eyebrow: 'Shri Umiya Bhojanalaya',
+      title: 'Pure Vegetarian Satvik Dining',
+      subtitle: 'Traditional Gujarati meals prepared with devotion — strictly no onion, no garlic, in accordance with Vaishnav and Jain traditions.',
+      breadcrumb: 'Dining',
+      onHome
+    }),
+    React.createElement(Dining, { showButton: false }),
+    // Timings & Schedule
+    React.createElement('section', { className: 'page-section', style: { background: 'var(--clr-white)' } },
+      React.createElement('div', { className: 'container' },
+        React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-10)' } },
+          React.createElement('div', { className: 'section-label' }, 'Meal Schedule'),
+          React.createElement('h2', { className: 'section-title' }, 'Bhojanalaya Timings'),
+          React.createElement('div', { className: 'divider divider-center' }),
+          React.createElement('p', { className: 'section-subtitle', style: { margin: '0 auto' } },
+            'Freshly prepared warm meals served daily during standard puja and darshan hours.'
+          )
+        ),
+        React.createElement('div', { className: 'page-grid-3' },
+          mealTimings.map((m, i) =>
+            React.createElement('div', { key: i, className: 'schedule-card' },
+              React.createElement('div', { className: 'schedule-badge' }, m.badge),
+              React.createElement('div', { className: 'schedule-time' }, m.time),
+              React.createElement('h3', { style: { fontSize: '18px', fontWeight: 600, color: 'var(--clr-deep)', margin: '8px 0' } }, m.title),
+              React.createElement('div', { className: 'schedule-desc' }, m.desc)
+            )
+          )
+        )
+      )
+    ),
+    // Standards Grid
+    React.createElement('section', { className: 'page-section', style: { background: 'var(--clr-surface)' } },
+      React.createElement('div', { className: 'container' },
+        React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-10)' } },
+          React.createElement('div', { className: 'section-label' }, 'Kitchen Standards'),
+          React.createElement('h2', { className: 'section-title' }, 'Hygiene & Sanctity'),
+          React.createElement('div', { className: 'divider divider-center' })
+        ),
+        React.createElement('div', { className: 'page-grid-3' },
+          standards.map((s, i) =>
+            React.createElement('div', { key: i, className: 'info-card' },
+              React.createElement('div', { className: 'info-card-icon' },
+                React.createElement(Icon, { name: s.icon, size: 24 })
+              ),
+              React.createElement('div', { className: 'info-card-title' }, s.title),
+              React.createElement('div', { className: 'info-card-text' }, s.text)
+            )
+          )
+        )
+      )
+    ),
+    React.createElement(Reviews),
+    React.createElement(BookingCTA, { onBook })
+  );
+}
+
+// 5. GALLERY PAGE
+function GalleryPage({ onBook, onHome }) {
+  return React.createElement(React.Fragment, null,
+    React.createElement(PageHeader, {
+      eyebrow: 'Visual Tour',
+      title: 'Uma Atithi Gruh Gallery',
+      subtitle: 'Take a visual walk through our guest house, comfortable bedrooms, dining hall, and nearby Arabian sea views.',
+      breadcrumb: 'Gallery',
+      onHome
+    }),
+    React.createElement(Gallery, { limit: null }),
+    React.createElement(BookingCTA, { onBook })
+  );
+}
+
+// 6. LOCATION PAGE
+function LocationPage({ onBook, onHome }) {
+  const travelModes = [
+    {
+      icon: 'train',
+      title: 'By Train',
+      desc: 'Dwarka Railway Station (DWK) connects directly to major cities including Ahmedabad, Mumbai, Rajkot, Delhi, and Varanasi. The Atithi Gruh is just 1.8 km (7 minutes) by auto-rickshaw.'
+    },
+    {
+      icon: 'plane',
+      title: 'By Air',
+      desc: 'Nearest airports are Jamnagar Airport (JGA, ~130 km), Porbandar Airport (PBD, ~105 km), and Rajkot International Airport (HSR, ~225 km). Regular taxi services are available.'
+    },
+    {
+      icon: 'bus',
+      title: 'By Bus / Road',
+      desc: 'Well linked via National Highway 51 and state highways. State Transport (GSRTC) and private sleeper coaches operate daily. Dwarka Central Bus Stand is only 1.5 km away.'
+    }
+  ];
+
+  return React.createElement(React.Fragment, null,
+    React.createElement(PageHeader, {
+      eyebrow: 'Dwarka, Gujarat',
+      title: 'Location & Travel Directions',
+      subtitle: 'Conveniently located on Patel Samaj Road near T.V. Station, 150m from Arabian sea coast and 2.1 km from Jagat Mandir Shri Dwarkadhish.',
+      breadcrumb: 'Location',
+      onHome
+    }),
+    React.createElement(Location, { showButton: false }),
+    // Travel Guide
+    React.createElement('section', { className: 'page-section', style: { background: 'var(--clr-white)' } },
+      React.createElement('div', { className: 'container' },
+        React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-10)' } },
+          React.createElement('div', { className: 'section-label' }, 'How to Reach'),
+          React.createElement('h2', { className: 'section-title' }, 'Getting to Uma Atithi Gruh'),
+          React.createElement('div', { className: 'divider divider-center' }),
+          React.createElement('p', { className: 'section-subtitle', style: { margin: '0 auto' } },
+            'Dwarka is well connected by rail, road, and air. Our property on Patel Samaj Road is easily accessible by any local vehicle.'
+          )
+        ),
+        React.createElement('div', { className: 'page-grid-3' },
+          travelModes.map((t, i) =>
+            React.createElement('div', { key: i, className: 'travel-card' },
+              React.createElement('div', { className: 'travel-header' },
+                React.createElement('div', { className: 'travel-icon-box' },
+                  React.createElement(Icon, { name: t.icon, size: 22 })
+                ),
+                React.createElement('div', { className: 'travel-title' }, t.title)
+              ),
+              React.createElement('div', { style: { color: 'var(--clr-text-muted)', fontSize: '14.5px', lineHeight: 1.7 } }, t.desc)
+            )
+          )
+        )
+      )
+    ),
+    React.createElement(BookingCTA, { onBook })
+  );
+}
+
+// 7. CONTACT PAGE
+function ContactPage({ onBook, onHome }) {
+  const faqs = [
+    {
+      q: 'How do I book a room at Uma Atithi Gruh?',
+      a: 'You can book directly by calling our 24/7 reception desk at +91 86049 00990 or by messaging us on WhatsApp. We confirm room availability and tariff immediately.'
+    },
+    {
+      q: 'How far is the guest house from Dwarkadhish Temple?',
+      a: 'Shri Dwarkadhish Jagat Mandir is approximately 2.1 km away. Auto-rickshaws are readily available outside our gates and reach the temple in 5–7 minutes.'
+    },
+    {
+      q: 'Is food available on the property?',
+      a: 'Yes, our in-house Shri Umiya Bhojanalaya serves 100% pure vegetarian Gujarati meals (Nasto, Rajbhog lunch thali, and light dinner) prepared strictly without onion or garlic.'
+    },
+    {
+      q: 'Is parking available for private cars and tour buses?',
+      a: 'Yes, we provide ample, safe, on-site parking for all our guests including private four-wheelers, tempo travellers, and yatra tour buses.'
+    },
+    {
+      q: 'Are elevator facilities available for senior citizens?',
+      a: 'Yes, our guest house is equipped with modern elevators reaching all accommodation floors for the comfort of elderly pilgrims.'
+    }
+  ];
+
+  return React.createElement(React.Fragment, null,
+    React.createElement(PageHeader, {
+      eyebrow: '24/7 Assistance',
+      title: 'Contact & Reservations',
+      subtitle: 'Reach our reception desk directly for room bookings, group queries, or travel guidance. We are at your service round the clock.',
+      breadcrumb: 'Contact',
+      onHome
+    }),
+    React.createElement(Contact),
+    // FAQs Section
+    React.createElement('section', { className: 'page-section', style: { background: 'var(--clr-surface)' } },
+      React.createElement('div', { className: 'container' },
+        React.createElement('div', { style: { textAlign: 'center', marginBottom: 'var(--space-8)' } },
+          React.createElement('div', { className: 'section-label' }, 'Common Queries'),
+          React.createElement('h2', { className: 'section-title' }, 'Frequently Asked Questions'),
+          React.createElement('div', { className: 'divider divider-center' })
+        ),
+        React.createElement('div', { className: 'faq-list' },
+          faqs.map((f, i) =>
+            React.createElement('div', { key: i, className: 'faq-item' },
+              React.createElement('div', { className: 'faq-q' },
+                React.createElement('span', { className: 'faq-q-num' }, `${i + 1}`),
+                React.createElement('span', null, f.q)
+              ),
+              React.createElement('div', { className: 'faq-a' }, f.a)
+            )
+          )
+        )
+      )
+    ),
+    React.createElement(BookingCTA, { onBook })
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ─── ROUTER & ROOT APP ─────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+
+function getPageFromLocation() {
+  if (window.__INITIAL_PAGE__) {
+    return window.__INITIAL_PAGE__;
+  }
+  const path = window.location.pathname.toLowerCase();
+  const matchPath = path.match(/(about|rooms|dining|gallery|location|contact)/);
+  if (matchPath) return matchPath[1];
+
+  const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
+  if (['about', 'rooms', 'dining', 'gallery', 'location', 'contact'].includes(hash)) {
+    return hash;
+  }
+  return 'home';
+}
+
 function App() {
+  const [currentPage, setCurrentPage] = useState(getPageFromLocation);
   useScrollReveal();
+
+  useEffect(() => {
+    const handleHash = () => {
+      const page = getPageFromLocation();
+      setCurrentPage(page);
+    };
+    window.addEventListener('hashchange', handleHash);
+    window.addEventListener('popstate', handleHash);
+    return () => {
+      window.removeEventListener('hashchange', handleHash);
+      window.removeEventListener('popstate', handleHash);
+    };
+  }, []);
+
+  const navigate = useCallback((page) => {
+    setCurrentPage(page);
+    if (page === 'home') {
+      if (window.location.hash) {
+        window.history.pushState(null, '', window.location.pathname.includes('.html') ? 'index.html' : './');
+      }
+    } else {
+      window.location.hash = `#/${page}`;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const titles = {
+      home: 'Kadva Patel Samaj | Uma Atithi Gruh Dwarka - Premium Guest House',
+      about: 'About Us | Uma Atithi Gruh - Kadva Patel Samaj Dwarka',
+      rooms: 'Rooms & Tariffs | Uma Atithi Gruh - Kadva Patel Samaj Dwarka',
+      dining: 'Pure Veg Dining & Bhojanalaya | Uma Atithi Gruh - Kadva Patel Samaj Dwarka',
+      gallery: 'Photo Gallery | Uma Atithi Gruh - Kadva Patel Samaj Dwarka',
+      location: 'Location & Travel Guide | Uma Atithi Gruh - Kadva Patel Samaj Dwarka',
+      contact: 'Contact & Reservations | Uma Atithi Gruh - Kadva Patel Samaj Dwarka'
+    };
+    if (titles[page]) {
+      document.title = titles[page];
+    }
+  }, []);
 
   const handleBookCall = useCallback(() => {
     window.location.href = 'tel:+918604900990';
   }, []);
 
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'about':
+        return React.createElement(AboutPage, { onBook: handleBookCall, onHome: () => navigate('home'), onNavigate: navigate });
+      case 'rooms':
+        return React.createElement(RoomsPage, { onBook: handleBookCall, onHome: () => navigate('home') });
+      case 'dining':
+        return React.createElement(DiningPage, { onBook: handleBookCall, onHome: () => navigate('home') });
+      case 'gallery':
+        return React.createElement(GalleryPage, { onBook: handleBookCall, onHome: () => navigate('home') });
+      case 'location':
+        return React.createElement(LocationPage, { onBook: handleBookCall, onHome: () => navigate('home') });
+      case 'contact':
+        return React.createElement(ContactPage, { onBook: handleBookCall, onHome: () => navigate('home') });
+      default:
+        return React.createElement(HomePage, { onBook: handleBookCall, onNavigate: navigate });
+    }
+  };
+
   return React.createElement(React.Fragment, null,
-    React.createElement(Navbar, { onBook: handleBookCall }),
-    React.createElement(Hero, { onBook: handleBookCall }),
-    React.createElement(TrustStrip),
-    React.createElement(About),
-    React.createElement(Amenities),
-    React.createElement(Rooms, { onBook: handleBookCall }),
-    React.createElement(Gallery),
-    React.createElement(Dining),
-    React.createElement(Reviews),
-    React.createElement(Location),
-    React.createElement(BookingCTA, { onBook: handleBookCall }),
-    React.createElement(Contact),
-    React.createElement(Footer),
+    React.createElement(Navbar, { currentPage, onNavigate: navigate, onBook: handleBookCall }),
+    renderCurrentPage(),
+    React.createElement(Footer, { onNavigate: navigate }),
     React.createElement(BackToTop),
     React.createElement(WhatsAppFloat)
   );
@@ -1252,4 +1697,3 @@ function App() {
 // ─── MOUNT ────────────────────────────────────────────────────
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(App));
-
