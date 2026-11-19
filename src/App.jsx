@@ -250,7 +250,12 @@ function Navbar({ onBook }) {
       React.createElement('div', { className: 'navbar-inner' },
         // Logo
         React.createElement('a', { href: '#home', className: 'navbar-logo', onClick: (e) => { e.preventDefault(); scrollTo('home'); } },
-          React.createElement('div', { className: 'logo-mark' }, 'ઉ'),
+          React.createElement('img', {
+            src: 'assets/images/kadva_d.webp',
+            alt: 'Kadva Patel Samaj Uma Atithi Gruh Logo',
+            className: 'logo-img',
+            onError: (e) => { e.currentTarget.src = 'assets/images/kadva_d.png'; }
+          }),
           React.createElement('div', null,
             React.createElement('div', { className: 'logo-text-en' }, 'Uma Atithi Gruh'),
             React.createElement('div', { className: 'logo-text-guj' }, 'કાદવા પટેલ સમાજ • દ્વારકા')
@@ -897,11 +902,16 @@ function Footer() {
     React.createElement('div', { className: 'container' },
       React.createElement('div', { className: 'footer-grid' },
         React.createElement('div', { className: 'footer-about' },
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' } },
-            React.createElement('div', { className: 'logo-mark', style: { width: 40, height: 40, fontSize: 18 } }, 'ઉ'),
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' } },
+            React.createElement('img', {
+              src: 'assets/images/kadva_d1.webp',
+              alt: 'Kadva Patel Samaj Logo',
+              style: { height: '44px', width: 'auto', background: 'rgba(255,255,255,0.95)', padding: '3px 8px', borderRadius: '4px' },
+              onError: (e) => { e.currentTarget.src = 'assets/images/kadva_d1.png'; }
+            }),
             React.createElement('div', null,
               React.createElement('div', { className: 'logo-text-en', style: { color: 'white', fontSize: 16 } }, 'Uma Atithi Gruh'),
-              React.createElement('div', { className: 'logo-text-guj', style: { color: 'var(--clr-gold-light)' } }, 'કાદવા પટેલ સમાજ')
+              React.createElement('div', { className: 'logo-text-guj', style: { color: 'var(--clr-gold-light)' } }, 'કાદવા પટેલ સમાજ • દ્વારકા')
             )
           ),
           React.createElement('p', { className: 'footer-desc' },
