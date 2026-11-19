@@ -817,8 +817,8 @@ function Location() {
           React.createElement('div', { className: 'location-cards' },
             [
               { icon: 'map-pin',   label: 'Address',   value: 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat – 361335', hint: 'GPS: 22.2461705°N, 68.9574118°E' },
-              { icon: 'phone',     label: 'Call Us',   value: '+91 86049 00990  |  02892-234333',   hint: 'Reception open 24 hours' },
-              { icon: 'mail',      label: 'Email',     value: 'umadwarka16@gmail.com',               hint: 'Response within 24 hours' },
+              { icon: 'phone',     label: 'Call Us',   value: '+91 86049 00990',                     hint: 'Reception open 24 hours' },
+              { icon: 'mail',      label: 'Email',     value: 'contact@kadvapatelsamaj.net',         hint: 'Response within 24 hours' },
               { icon: 'clock',     label: 'Check-in',  value: 'Check-in: 11:00 AM  |  Check-out: 10:00 AM', hint: 'Early check-in subject to availability' },
             ].map((c, i) =>
               React.createElement('div', { key: i, className: 'loc-card' },
@@ -905,8 +905,7 @@ function Contact() {
           React.createElement('div', { className: 'contact-cards' },
             [
               { icon: 'phone',   label: 'Phone',    value: '+91 86049 00990', hint: '24-hour reception' },
-              { icon: 'phone',   label: 'Landline', value: '02892 - 234333', hint: 'Office hours: 7AM – 10PM' },
-              { icon: 'mail',    label: 'Email',    value: 'umadwarka16@gmail.com', hint: 'Enquiries & bookings' },
+              { icon: 'mail',    label: 'Email',    value: 'contact@kadvapatelsamaj.net', hint: 'Enquiries & bookings' },
               { icon: 'map-pin', label: 'Address',  value: 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat 361335', hint: 'GPS: 22.2461°N 68.9574°E' },
             ].map((c, i) =>
               React.createElement('div', { key: i, className: 'contact-card' },
@@ -1032,8 +1031,7 @@ function Footer() {
           React.createElement('div', { className: 'footer-heading' }, 'Contact'),
           React.createElement('div', { className: 'footer-links' },
             React.createElement('a', { href: 'tel:+918604900990' }, '+91 86049 00990'),
-            React.createElement('a', { href: 'tel:02892234333' }, '02892 - 234333'),
-            React.createElement('a', { href: 'mailto:umadwarka16@gmail.com' }, 'umadwarka16@gmail.com'),
+            React.createElement('a', { href: 'mailto:contact@kadvapatelsamaj.net' }, 'contact@kadvapatelsamaj.net'),
             React.createElement('span', { style: { color: 'rgba(255,255,255,0.4)', fontSize: 13, lineHeight: 1.6 } }, 'Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat 361335')
           )
         )

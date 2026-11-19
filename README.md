@@ -85,8 +85,8 @@ kadvapatelsamaj/
 ---
 
 ### 📞 Contact Details
-- **Phone:** +91 86049 00990 / 02892-234333
-- **Email:** umadwarka16@gmail.com
+- **Phone:** +91 86049 00990
+- **Email:** contact@kadvapatelsamaj.net
 - **Address:** Patel Samaj Road, Near T.V. Station, Dwarka, Gujarat – 361335
 - **GPS:** 22.2461705°N, 68.9574118°E
 - **Managed by:** Shri Umiya Mataji Mandir Trust, Sidsar
