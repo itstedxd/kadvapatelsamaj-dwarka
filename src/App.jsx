@@ -182,13 +182,74 @@ const GALLERY_IMGS = [
   { src: "assets/images/patel_rooms-4.webp", alt: "Spacious 4-bed family accommodation" },
 ];
 
-// ─── ICONS HELPER ────────────────────────────────────────────
+// ─── CUSTOM SVG ICONS FOR HOSPITALITY & SACRED AMENITIES ───
+const CUSTOM_SVGS = {
+  // Telephone / Phone call icons
+  phone: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+  </svg>`,
+  'phone-call': (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    <path d="M14.05 2a9 9 0 0 1 8 7.94"/>
+    <path d="M14.05 6A5 5 0 0 1 18 10"/>
+  </svg>`,
+  // Sacred Hindu Temple / Mandir with Shikhara, Kalash & Flag
+  temple: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2v2m0 0l-2 1.5M12 4l2 1.5M12 2a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6z"/>
+    <path d="M12 4l-4 6h8l-4-6z"/>
+    <path d="M5 10h14v2H5z"/>
+    <path d="M6 12v9h12v-9"/>
+    <path d="M10 21v-5a2 2 0 0 1 4 0v5"/>
+    <path d="M4 21h16"/>
+  </svg>`,
+  // Lift / Elevator hotel icon
+  elevator: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="2" width="18" height="20" rx="3"/>
+    <path d="M12 2v20"/>
+    <path d="M7.5 8l-2 2h4l-2-2z" fill="currentColor"/>
+    <path d="M16.5 16l-2-2h4l-2 2z" fill="currentColor"/>
+    <circle cx="7.5" cy="14" r="1.5"/>
+    <path d="M6 18h3"/>
+    <circle cx="16.5" cy="10" r="1.5"/>
+    <path d="M15 13h3"/>
+  </svg>`,
+  lift: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="2" width="18" height="20" rx="3"/>
+    <path d="M12 2v20"/>
+    <path d="M7.5 8l-2 2h4l-2-2z" fill="currentColor"/>
+    <path d="M16.5 16l-2-2h4l-2 2z" fill="currentColor"/>
+    <circle cx="7.5" cy="14" r="1.5"/>
+    <path d="M6 18h3"/>
+    <circle cx="16.5" cy="10" r="1.5"/>
+    <path d="M15 13h3"/>
+  </svg>`
+};
+
 function Icon({ name, size = 18, ...props }) {
   const ref = useRef(null);
   useEffect(() => {
-    if (ref.current && window.lucide) {
-      ref.current.innerHTML = '';
-      const svg = lucide.createElement(lucide[toCamel(name)]);
+    if (!ref.current) return;
+    ref.current.innerHTML = '';
+    
+    // 1. Direct custom SVG check
+    if (CUSTOM_SVGS[name]) {
+      ref.current.innerHTML = CUSTOM_SVGS[name](size);
+      return;
+    }
+    
+    // 2. Lucide icons check with smart fallback
+    if (window.lucide) {
+      const camel = toCamel(name);
+      let svg = lucide[camel] ? lucide.createElement(lucide[camel]) : null;
+      if (!svg) {
+        if (name.includes('temple')) {
+          svg = lucide.createElement(lucide.Landmark);
+        } else if (name.includes('elevator') || name.includes('lift')) {
+          svg = lucide.createElement(lucide.ArrowUpDown);
+        } else if (lucide.Sparkles) {
+          svg = lucide.createElement(lucide.Sparkles);
+        }
+      }
       if (svg) {
         svg.setAttribute('width', size);
         svg.setAttribute('height', size);
@@ -196,11 +257,12 @@ function Icon({ name, size = 18, ...props }) {
       }
     }
   }, [name, size]);
+
   function toCamel(str) {
     return str.replace(/-([a-z])/g, (_, c) => c.toUpperCase())
               .replace(/^./, c => c.toUpperCase());
   }
-  return React.createElement('span', { ref, style: { display: 'inline-flex', alignItems: 'center' }, ...props });
+  return React.createElement('span', { ref, style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }, ...props });
 }
 
 // ─── STAR RATING ─────────────────────────────────────────────
@@ -258,7 +320,7 @@ function Navbar({ onBook }) {
           }),
           React.createElement('div', null,
             React.createElement('div', { className: 'logo-text-en' }, 'Uma Atithi Gruh'),
-            React.createElement('div', { className: 'logo-text-guj' }, 'કાદવા પટેલ સમાજ • દ્વારકા')
+            React.createElement('div', { className: 'logo-text-guj' }, 'કડવા પટેલ સમાજ • દ્વારકા')
           )
         ),
         // Desktop nav
@@ -278,9 +340,12 @@ function Navbar({ onBook }) {
             React.createElement(Icon, { name: 'phone', size: 14 }),
             ' +91 70434 24333'
           ),
-          React.createElement('button', { className: 'btn btn-gold', style: { padding: '10px 20px', fontSize: '12px' }, onClick: onBook },
-            'Book Now'
-          )
+          React.createElement('a', {
+            className: 'btn btn-gold',
+            style: { padding: '10px 20px', fontSize: '12px', textDecoration: 'none' },
+            href: 'tel:+917043424333',
+            onClick: onBook
+          }, 'Book Now')
         ),
         // Hamburger
         React.createElement('button', {
@@ -303,8 +368,13 @@ function Navbar({ onBook }) {
           onClick: (e) => { e.preventDefault(); scrollTo(l.id); }
         }, l.label)
       ),
-      React.createElement('button', { className: 'btn btn-gold', onClick: () => { setMenuOpen(false); onBook(); } },
-        React.createElement(Icon, { name: 'calendar', size: 16 }),
+      React.createElement('a', {
+        className: 'btn btn-gold',
+        href: 'tel:+917043424333',
+        style: { textDecoration: 'none' },
+        onClick: () => { setMenuOpen(false); onBook(); }
+      },
+        React.createElement(Icon, { name: 'phone', size: 16 }),
         ' Book Now'
       ),
       React.createElement('a', { href: 'tel:+917043424333', style: { color: 'var(--clr-gold)', fontWeight: 600, fontSize: 15 } },
@@ -331,16 +401,21 @@ function Hero({ onBook }) {
         'Dwarka, Gujarat  •  Since 2003'
       ),
       React.createElement('h1', { className: 'hero-title' }, 'Uma Atithi Gruh'),
-      React.createElement('span', { className: 'hero-title-guj' }, 'ઉમા અતિથિ ગૃહ — કાદવા પટેલ સમાજ, દ્વારકા'),
+      React.createElement('span', { className: 'hero-title-guj' }, 'ઉમા અતિથિ ગૃહ — કડવા પટેલ સમાજ, દ્વારકા'),
       React.createElement('p', { className: 'hero-desc' },
         'Sacred hospitality at the gateway to Dwarkadhish. Pure vegetarian meals, serene sea views, and community warmth — your home during the holy yatra.'
       ),
       React.createElement('div', { className: 'hero-actions' },
-        React.createElement('button', { className: 'btn btn-gold', onClick: onBook },
-          React.createElement(Icon, { name: 'calendar-check', size: 16 }),
+        React.createElement('a', {
+          className: 'btn btn-gold',
+          href: 'tel:+917043424333',
+          style: { textDecoration: 'none' },
+          onClick: onBook
+        },
+          React.createElement(Icon, { name: 'phone', size: 16 }),
           ' Book Your Stay'
         ),
-        React.createElement('a', { className: 'btn btn-white', href: '#rooms' },
+        React.createElement('a', { className: 'btn btn-white', href: '#rooms', style: { textDecoration: 'none' } },
           React.createElement(Icon, { name: 'bed-double', size: 16 }),
           ' View Rooms'
         )
@@ -571,8 +646,10 @@ function RoomCard({ room, onBook, delay }) {
           React.createElement('div', { className: 'room-price-num' }, `₹${room.price.toLocaleString('en-IN')}`),
           React.createElement('div', { className: 'room-price-per' }, 'per night')
         ),
-        React.createElement('button', {
+        React.createElement('a', {
           className: 'room-book-btn',
+          href: 'tel:+917043424333',
+          style: { textDecoration: 'none' },
           onClick: () => onBook(room)
         }, 'Book Now')
       )
@@ -780,11 +857,16 @@ function BookingCTA({ onBook }) {
           React.createElement('p', { className: 'booking-cta-sub' }, 'Book directly for best rates. No booking fees, no hidden charges.')
         ),
         React.createElement('div', { className: 'booking-cta-actions' },
-          React.createElement('button', { className: 'btn btn-white', onClick: onBook },
-            React.createElement(Icon, { name: 'calendar-check', size: 16 }),
+          React.createElement('a', {
+            className: 'btn btn-white',
+            href: 'tel:+917043424333',
+            style: { textDecoration: 'none' },
+            onClick: onBook
+          },
+            React.createElement(Icon, { name: 'phone', size: 16 }),
             ' Book a Room'
           ),
-          React.createElement('a', { className: 'btn btn-outline', href: 'tel:+917043424333', style: { borderColor: 'white', color: 'white' } },
+          React.createElement('a', { className: 'btn btn-outline', href: 'tel:+917043424333', style: { borderColor: 'white', color: 'white', textDecoration: 'none' } },
             React.createElement(Icon, { name: 'phone', size: 16 }),
             ' Call Reception'
           )
@@ -911,7 +993,7 @@ function Footer() {
             }),
             React.createElement('div', null,
               React.createElement('div', { className: 'logo-text-en', style: { color: 'white', fontSize: 16 } }, 'Uma Atithi Gruh'),
-              React.createElement('div', { className: 'logo-text-guj', style: { color: 'var(--clr-gold-light)' } }, 'કાદવા પટેલ સમાજ • દ્વારકા')
+              React.createElement('div', { className: 'logo-text-guj', style: { color: 'var(--clr-gold-light)' } }, 'કડવા પટેલ સમાજ • દ્વારકા')
             )
           ),
           React.createElement('p', { className: 'footer-desc' },
@@ -1117,49 +1199,48 @@ function BackToTop() {
   }, React.createElement(Icon, { name: 'chevron-up', size: 20 }));
 }
 
-// ─── WHATSAPP FLOAT ───────────────────────────────────────────
-function WhatsAppFloat() {
+// ─── CALL FLOAT ───────────────────────────────────────────────
+function CallFloat() {
   return React.createElement('a', {
-    href: 'https://wa.me/917043424333?text=Hello%2C%20I%20would%20like%20to%20book%20a%20room%20at%20Uma%20Atithi%20Gruh%20Dwarka.',
-    target: '_blank', rel: 'noopener noreferrer',
-    'aria-label': 'Chat on WhatsApp',
-    style: {
-      position: 'fixed', bottom: '80px', right: '28px', zIndex: 500,
-      width: 52, height: 52, borderRadius: '50%',
-      background: '#25D366', color: 'white',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      boxShadow: '0 4px 20px rgba(37,211,102,0.4)',
-      fontSize: 26, textDecoration: 'none',
-      transition: 'var(--transition)',
-    }
-  }, '💬');
+    href: 'tel:+917043424333',
+    className: 'call-float-btn',
+    'aria-label': 'Call +91 70434 24333 to book your stay',
+    title: 'Call Uma Atithi Gruh Reception: +91 70434 24333'
+  },
+    React.createElement('span', { className: 'call-float-icon-wrap' },
+      React.createElement(Icon, { name: 'phone-call', size: 20 })
+    ),
+    React.createElement('span', { className: 'call-float-text' },
+      React.createElement('span', { className: 'call-float-label' }, 'Call to Book'),
+      React.createElement('span', { className: 'call-float-num' }, '+91 70434 24333')
+    )
+  );
 }
 
 // ─── APP ROOT ─────────────────────────────────────────────────
 function App() {
-  const [bookModal, setBookModal] = useState(null); // null | room object
   useScrollReveal();
 
-  const openBook = useCallback((room = {}) => setBookModal(room), []);
-  const closeBook = useCallback(() => setBookModal(null), []);
+  const handleBookCall = useCallback(() => {
+    window.location.href = 'tel:+917043424333';
+  }, []);
 
   return React.createElement(React.Fragment, null,
-    React.createElement(Navbar, { onBook: openBook }),
-    React.createElement(Hero, { onBook: openBook }),
+    React.createElement(Navbar, { onBook: handleBookCall }),
+    React.createElement(Hero, { onBook: handleBookCall }),
     React.createElement(TrustStrip),
     React.createElement(About),
     React.createElement(Amenities),
-    React.createElement(Rooms, { onBook: openBook }),
+    React.createElement(Rooms, { onBook: handleBookCall }),
     React.createElement(Gallery),
     React.createElement(Dining),
     React.createElement(Reviews),
     React.createElement(Location),
-    React.createElement(BookingCTA, { onBook: openBook }),
+    React.createElement(BookingCTA, { onBook: handleBookCall }),
     React.createElement(Contact),
     React.createElement(Footer),
     React.createElement(BackToTop),
-    React.createElement(WhatsAppFloat),
-    bookModal !== null && React.createElement(BookingModal, { room: bookModal.id ? bookModal : null, onClose: closeBook })
+    React.createElement(CallFloat)
   );
 }
 
